@@ -4,18 +4,17 @@ section .data
     newline db 10     ; Newline character for formatting
 
 section .bss
-    stack resb 10     ; Stack to store characters in reverse order
-    top   resb 1      ; Top of the stack
-
+    stack resb 10     
+    top   resb 1     
 section .text
     global _start
 
 _start:
     ; Input Loop
-    mov ecx, count     ; Initialize loop counter
+    mov ecx, count     
 input_loop:
     mov ah, 1          ; Function code for character input
-    int 21h            ; BIOS interrupt for input
+    int 21h            
     mov [buffer], al   ; Store the input character
 
     ; Push the character onto the stack
@@ -25,28 +24,28 @@ input_loop:
     mov [ebx + ecx], al
     inc byte [top]
 
-    loop input_loop    ; Repeat until 10 characters are input
+    loop input_loop    
 
-    ; Output Loop (Print characters in reverse order)
-    mov ecx, count     ; Initialize loop counter
+   
+    mov ecx, count     
 output_loop:
-    ; Pop character from the stack
+    
     dec byte [top]
     mov ebx, stack
     mov al, [ebx + byte [top]]
 
     ; Print the character
-    mov ah, 2          ; Function code for character output
-    int 21h            ; BIOS interrupt for output
+    mov ah, 2          
+    int 21h           
 
-    loop output_loop   ; Repeat until all characters are printed
+    loop output_loop   
 
-    ; Print newline character
-    mov dl, newline     ; Newline character
-    mov ah, 2          ; Function code for character output
-    int 21h            ; BIOS interrupt for output
+    
+    mov dl, newline     
+    mov ah, 2          
+    int 21h          
 
-    ; Exit the program
-    mov ah, 4Ch        ; Function code for program termination
-    xor al, al         ; Exit code 0
-    int 21h            ; BIOS interrupt for program termination
+    
+    mov ah, 4Ch        
+    xor al, al         
+    int 21h            
